@@ -1,0 +1,42 @@
+{
+  "name": "Scoby Pass",
+  "symbol": "SCOBYPASS",
+  "description": "Welcome to Scoby SociaI! We're a Web3-native, censorship-resistant, token-gated, live audio-video ecosystem where you can share experiences, make connections, build community and earn royalties based on the NFTs you create, collect, curate and trade. We belong together. You belong with us. PLEASE NOTE: THIS PROJECT PASS NFT IS A SOLMAGNET! All of the royalties you’ll earn from minting and sharing Scoby Tokens will be sent to the holder of this Project Pass. Do not lose this. Keep it in cold storage in a hardware wallet. You are of course welcome to sell this or give it away, just please understand that you are selling or gifting what could be substantial future royalty streams. Price the sale accordingly.",
+  "seller_fee_basis_points": 2000,
+  "image": "0.png",
+  "external_url": "https://www.scoby.social/",
+  "edition": 0,
+  "attributes": [
+    {
+      "trait_type": "Ecosystem",
+      "value": "Scoby"
+    },
+    {
+      "trait_type": "Protocol",
+      "value": "Social Crypto Syndication"
+    },
+    {
+      "trait_type": "Action",
+      "value": "Project Pass"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "0.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "7zP1BjWppJNpVj1ioxpKE9SaejxSismd8J7d3ortEcNn",
+        "share": 100
+      }
+    ]
+  },
+  "collection": {
+    "name": "Scoby Social",
+    "family": "Mapshifting"
+  }
+}

@@ -1,0 +1,4 @@
+/solana_anchor/target
+/target
+Cargo.lock
+.config

@@ -1,0 +1,24 @@
+{
+	"maxNumberOfLines" : 2,
+	"symbol" : "SCOBYPASS",
+	"creator" : "7zP1BjWppJNpVj1ioxpKE9SaejxSismd8J7d3ortEcNn",
+	"sellerFee" : 2000,
+	"updateAuthority" : "5naz6yeUatB3QmYApqxM1qGKDHLuxrMzVcHto1gyyxkk",
+	"scobyWallet" : "BhfqmcMMEbf5gRJ4hwXzmso7BiBYztpnuqTjzXNt9sEe",
+	"mintingPrice" : 0,
+	"royaltyForMinting" : {
+		"scoby" : 3300,
+		"creator" : 3200,
+		"creatorScout" : 500,
+		"parent" : 2500,
+		"grandParent" : 500
+	},
+	"royaltyForTrading" : {
+		"scoby" : 10,
+		"creator" : 50,
+		"creatorScout" : 15,
+		"parent" : 25,
+		"grandParent" : 0
+	}
+
+}
