@@ -35,8 +35,8 @@ const { metadata: { Metadata } } = programs
 const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 
 // membership kind smart contract address and IDL
-const FakeIDNFTProgramId = new PublicKey('CwwjbR6zspiVgKvLq6ufs5u8TZ3WTKYexaQS6kHPQcku')
-const FakeIDNFTIdl = require('./membership.json')
+const FakeIDNFTProgramId = new PublicKey('8S18mGzHyNGur85jAPoEjad8P8rywTpjyABbBEdmj2gb')
+const FakeIDNFTIdl = require('./usdc-fake-id.json')
 
 const ParentWallet = new PublicKey('4NCF6k76LThBY5Kx6jUBFeY5b7rLULoFugmGDX9Jx77B')
 

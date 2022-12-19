@@ -249,16 +249,6 @@
           "isSigner": false
         },
         {
-          "name": "creatorScoutNftMint",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "creatorScoutNftAccount",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "sourceTokenAccount",
           "isMut": true,
           "isSigner": false
@@ -298,6 +288,12 @@
         {
           "name": "bump",
           "type": "u8"
+        },
+        {
+          "name": "data",
+          "type": {
+            "defined": "Metadata"
+          }
         }
       ]
     },
@@ -350,7 +346,7 @@
           "isSigner": false
         },
         {
-          "name": "parentMetadataExtended",
+          "name": "parentNftMetadataExtended",
           "isMut": true,
           "isSigner": false
         },
@@ -360,12 +356,17 @@
           "isSigner": false
         },
         {
-          "name": "creatorNftAccount",
+          "name": "grandGrandParentNftAccount",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "creatorScoutNftAccount",
+          "name": "grandGrandGrandParentNftAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "creatorNftAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -385,17 +386,22 @@
           "isSigner": false
         },
         {
-          "name": "creatorScoutUsdcTokenAccount",
+          "name": "parentNftUsdcTokenAccount",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "parentMembershipUsdcTokenAccount",
+          "name": "grandParentNftUsdcTokenAccount",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "grandParentMembershipUsdcTokenAccount",
+          "name": "grandGrandParentNftUsdcTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "grandGrandGrandParentNftUsdcTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -424,6 +430,12 @@
         {
           "name": "bump",
           "type": "u8"
+        },
+        {
+          "name": "data",
+          "type": {
+            "defined": "Metadata"
+          }
         }
       ]
     }
@@ -439,11 +451,23 @@
             "type": "publicKey"
           },
           {
+            "name": "minter",
+            "type": "publicKey"
+          },
+          {
             "name": "parentNfp",
             "type": "publicKey"
           },
           {
             "name": "grandParentNfp",
+            "type": "publicKey"
+          },
+          {
+            "name": "grandGrandParentNfp",
+            "type": "publicKey"
+          },
+          {
+            "name": "grandGrandGrandParentNfp",
             "type": "publicKey"
           },
           {
@@ -457,6 +481,22 @@
           {
             "name": "bump",
             "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Metadata",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "uri",
+            "type": "string"
           }
         ]
       }
@@ -567,15 +607,19 @@
             "type": "u16"
           },
           {
-            "name": "creatorScout",
-            "type": "u16"
-          },
-          {
             "name": "parent",
             "type": "u16"
           },
           {
             "name": "grandParent",
+            "type": "u16"
+          },
+          {
+            "name": "grandGrandParent",
+            "type": "u16"
+          },
+          {
+            "name": "grandGrandGrandParent",
             "type": "u16"
           }
         ]

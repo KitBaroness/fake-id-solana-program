@@ -33,9 +33,9 @@ log.setLevel('info');
 // const axios = require('axios');
 const { metadata: { Metadata } } = programs
 var FormData = require('form-data');
-const programId = new PublicKey('CwwjbR6zspiVgKvLq6ufs5u8TZ3WTKYexaQS6kHPQcku')
+const programId = new PublicKey('8S18mGzHyNGur85jAPoEjad8P8rywTpjyABbBEdmj2gb')
 const TOKEN_METADATA_PROGRAM_ID = new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
-const idl=JSON.parse(fs.readFileSync('src/membership.json','utf8'))
+const idl=JSON.parse(fs.readFileSync('src/usdc-fake-id.json','utf8'))
 
 // const key = 'a498033f45742991a161'
 // const secret = '18f6582c5e2a5177785f8d6cdf3e3629f9a6cb57a27977d8725e2aa6ca3ebd7f'
