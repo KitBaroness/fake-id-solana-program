@@ -650,6 +650,7 @@ pub mod solana_anchor {
                 &required_accounts_for_transfer,
             )?;
         }
+        msg!("+ scoby");
 
         if *ctx.accounts.owner.key != creator_wallet {
             let transfer_tokens_instruction = transfer(
@@ -658,7 +659,7 @@ pub mod solana_anchor {
                 &ctx.accounts.creator_usdc_token_account.key,
                 &ctx.accounts.owner.key,
                 &[ctx.accounts.owner.key],
-                pool.minting_price * pool.royalty_for_minting.creator as u64 / 10000 / 1000, 
+                pool.minting_price * pool.royalty_for_minting.creator as u64 / 10000, 
             )?;
         
             let required_accounts_for_transfer = [
@@ -672,6 +673,7 @@ pub mod solana_anchor {
                 &required_accounts_for_transfer,
             )?;
         }
+        msg!("+ creator");
 
         // if *ctx.accounts.owner.key != creator_scout_wallet {
         //     let transfer_tokens_instruction = transfer(
@@ -716,6 +718,7 @@ pub mod solana_anchor {
                 &required_accounts_for_transfer,
             )?;
         }
+        msg!("+ parent");
 
         if *ctx.accounts.owner.key != grand_parent_nft_owner {
             let transfer_tokens_instruction = transfer(
@@ -738,6 +741,7 @@ pub mod solana_anchor {
                 &required_accounts_for_transfer,
             )?;
         }
+        msg!("+ grand parent");
 
         if *ctx.accounts.owner.key != grand_grand_parent_nft_owner {
             let transfer_tokens_instruction = transfer(
@@ -760,6 +764,7 @@ pub mod solana_anchor {
                 &required_accounts_for_transfer,
             )?;
         }
+        msg!("+ grand grand parent");
 
         if *ctx.accounts.owner.key != grand_grand_grand_parent_nft_owner {
             let transfer_tokens_instruction = transfer(

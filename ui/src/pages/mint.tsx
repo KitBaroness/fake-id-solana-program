@@ -41,7 +41,7 @@ const FakeIDNFTIdl = require('./usdc-fake-id.json')
 const ParentWallet = new PublicKey('4NCF6k76LThBY5Kx6jUBFeY5b7rLULoFugmGDX9Jx77B')
 
 // meta data for scoby nft
-const FakeIDNFTPOOL = new PublicKey('D9iVhtAz1HTrAV6pFvnCjU8D8MUkuhyGSLKvnB7ghEWv')
+const FakeIDNFTPOOL = new PublicKey('6TVrWdVQAegLFUewKJLeZ7qsB43qXXwWxJmAu6ztsDmV')
 const FakeIDNFTSYMBOL = "HELLPASS"
 
 // ...  more nfts can be added here
@@ -229,12 +229,16 @@ export default function Mint(){
 			const [metadataExtended, bump] = await PublicKey.findProgramAddress([mintKey.toBuffer(),FakeIDNFTPOOL.toBuffer()], FakeIDNFTProgramId)
 			let royaltyList : String[]= []
 
-			var myMint = new PublicKey('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU');
+			let formData = {
+				name : 'first fake ID',
+				uri: `https://gateway.pinata.cloud/ipfs/QmYk9gvH54WW6ZTpvjVDuCkhRXiZEwxjk7YhCxq3zYFxCY/1.json`,
+			}
+			var usdcToken = new PublicKey('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU');
 
 			var sourceTokenAccount = await getOrCreateAssociatedTokenAccount(
 				conn,
 				wallet.publicKey,
-				myMint,
+				usdcToken,
 				wallet.publicKey,
 				wallet.signTransaction
 			)
@@ -248,7 +252,7 @@ export default function Mint(){
 			var scobyUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
 				conn,
 				wallet.publicKey,
-				myMint,
+				usdcToken,
 				poolData.scobyWallet,
 				wallet.signTransaction
 			)
@@ -272,7 +276,7 @@ export default function Mint(){
 			
 			if(poolData.countMinting == 0){
 
-				transaction.add(program.instruction.mintRoot(new anchor.BN(bump),{
+				transaction.add(program.instruction.mintRoot(new anchor.BN(bump), formData, {
 					accounts : {
 						owner : wallet.publicKey,
 						pool : FakeIDNFTPOOL,
@@ -318,7 +322,7 @@ export default function Mint(){
 				var creatorUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
 					conn,
 					wallet.publicKey,
-					myMint,
+					usdcToken,
 					creatorWallet,
 					wallet.signTransaction
 				)
@@ -343,7 +347,7 @@ export default function Mint(){
 				// var creatorScoutUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
 				// 	conn,
 				// 	wallet.publicKey,
-				// 	myMint,
+				// 	usdcToken,
 				// 	creatorScoutWallet,
 				// 	wallet.signTransaction
 				// )
@@ -371,7 +375,7 @@ export default function Mint(){
 				var parentMembershipUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
 					conn,
 					wallet.publicKey,
-					myMint,
+					usdcToken,
 					parentMembershipOwner,
 					wallet.signTransaction
 				)
@@ -399,7 +403,7 @@ export default function Mint(){
 				var grandParentMembershipUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
 					conn,
 					wallet.publicKey,
-					myMint,
+					usdcToken,
 					grandParentMembershipOwner,
 					wallet.signTransaction
 				)
@@ -426,7 +430,7 @@ export default function Mint(){
 				var grandGrandParentMembershipUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
 					conn,
 					wallet.publicKey,
-					myMint,
+					usdcToken,
 					grandGrandParentMembershipOwner,
 					wallet.signTransaction
 				)
@@ -453,7 +457,7 @@ export default function Mint(){
 				var grandGrandGrandParentMembershipUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
 					conn,
 					wallet.publicKey,
-					myMint,
+					usdcToken,
 					grandGrandGrandParentMembershipOwner,
 					wallet.signTransaction
 				)
@@ -467,7 +471,7 @@ export default function Mint(){
 					}
 				}
 
-				transaction.add(program.instruction.mint(new anchor.BN(bump),{
+				transaction.add(program.instruction.mint(new anchor.BN(bump),formData, {
 					accounts : {
 						owner : wallet.publicKey,
 						pool : FakeIDNFTPOOL,
@@ -480,7 +484,7 @@ export default function Mint(){
 						// parentNftMint : parentMembership.extendedData.mint,
 						parentNftAccount : parentMembershipAccount,
 						// parentNftOwner : parentMembershipOwner,
-						parentMetadataExtended : parentMembership.metadataExtended,
+						parentNftMetadataExtended : parentMembership.metadataExtended,
 						// grandParentNftMint : parentMembership.extendedData.parentNfp,
 						grandParentNftAccount : grandParentMembershipAccount,
 						// grandParentNftOwner : grandParentMembershipOwner,
@@ -501,10 +505,10 @@ export default function Mint(){
 						scobyUsdcTokenAccount : scobyUsdcTokenAccount[0],
 						creatorUsdcTokenAccount: creatorUsdcTokenAccount[0],
 						// creatorScoutUsdcTokenAccount : creatorScoutUsdcTokenAccount[0],
-						parentMembershipUsdcTokenAccount: parentMembershipUsdcTokenAccount[0],
-						grandParentMembershipUsdcTokenAccount : grandParentMembershipUsdcTokenAccount[0],
-						grandGrandParentMembershipUsdcTokenAccount : grandGrandParentMembershipUsdcTokenAccount[0],
-						grandGrandGrandParentMembershipUsdcTokenAccount : grandGrandGrandParentMembershipUsdcTokenAccount[0],
+						parentNftUsdcTokenAccount: parentMembershipUsdcTokenAccount[0],
+						grandParentNftUsdcTokenAccount : grandParentMembershipUsdcTokenAccount[0],
+						grandGrandParentNftUsdcTokenAccount : grandGrandParentMembershipUsdcTokenAccount[0],
+						grandGrandGrandParentNftUsdcTokenAccount : grandGrandGrandParentMembershipUsdcTokenAccount[0],
 						tokenProgram : TOKEN_PROGRAM_ID,
 						tokenMetadataProgram : TOKEN_METADATA_PROGRAM_ID,
 						systemProgram : SystemProgram.programId,
