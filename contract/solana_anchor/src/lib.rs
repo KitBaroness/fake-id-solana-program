@@ -630,7 +630,7 @@ pub mod solana_anchor {
                 &ctx.accounts.scoby_usdc_token_account.key,
                 &ctx.accounts.owner.key,
                 &[ctx.accounts.owner.key],
-                pool.minting_price * pool.royalty_for_minting.scoby as u64 / 10000 / 1000, 
+                pool.minting_price * pool.royalty_for_minting.scoby as u64 / 10000, 
             )?;
         
             let required_accounts_for_transfer = [
@@ -667,27 +667,27 @@ pub mod solana_anchor {
             )?;
         }
 
-        if *ctx.accounts.owner.key != creator_scout_wallet {
-            let transfer_tokens_instruction = transfer(
-                &ctx.accounts.token_program.key,
-                &ctx.accounts.source_token_account.key,
-                &ctx.accounts.creator_scout_usdc_token_account.key,
-                &ctx.accounts.owner.key,
-                &[ctx.accounts.owner.key],
-                pool.minting_price * pool.royalty_for_minting.creator_scout as u64 / 10000 / 1000, 
-            )?;
+        // if *ctx.accounts.owner.key != creator_scout_wallet {
+        //     let transfer_tokens_instruction = transfer(
+        //         &ctx.accounts.token_program.key,
+        //         &ctx.accounts.source_token_account.key,
+        //         &ctx.accounts.creator_scout_usdc_token_account.key,
+        //         &ctx.accounts.owner.key,
+        //         &[ctx.accounts.owner.key],
+        //         pool.minting_price * pool.royalty_for_minting.creator_scout as u64 / 10000 / 1000, 
+        //     )?;
         
-            let required_accounts_for_transfer = [
-                ctx.accounts.source_token_account.clone(),
-                ctx.accounts.creator_scout_usdc_token_account.clone(),
-                ctx.accounts.owner.clone(),
-            ];
+        //     let required_accounts_for_transfer = [
+        //         ctx.accounts.source_token_account.clone(),
+        //         ctx.accounts.creator_scout_usdc_token_account.clone(),
+        //         ctx.accounts.owner.clone(),
+        //     ];
 
-            invoke(
-                &transfer_tokens_instruction,
-                &required_accounts_for_transfer,
-            )?;
-        }
+        //     invoke(
+        //         &transfer_tokens_instruction,
+        //         &required_accounts_for_transfer,
+        //     )?;
+        // }
 
         if *ctx.accounts.owner.key != parent_nft_owner {
             let transfer_tokens_instruction = transfer(
@@ -696,7 +696,7 @@ pub mod solana_anchor {
                 &ctx.accounts.parent_nft_usdc_token_account.key,
                 &ctx.accounts.owner.key,
                 &[ctx.accounts.owner.key],
-                pool.minting_price * pool.royalty_for_minting.parent as u64 / 10000 / 1000, 
+                pool.minting_price * pool.royalty_for_minting.parent as u64 / 10000, 
             )?;
         
             let required_accounts_for_transfer = [
@@ -718,12 +718,56 @@ pub mod solana_anchor {
                 &ctx.accounts.grand_parent_nft_usdc_token_account.key,
                 &ctx.accounts.owner.key,
                 &[ctx.accounts.owner.key],
-                pool.minting_price * pool.royalty_for_minting.grand_parent as u64 / 10000 / 1000, 
+                pool.minting_price * pool.royalty_for_minting.grand_parent as u64 / 10000, 
             )?;
         
             let required_accounts_for_transfer = [
                 ctx.accounts.source_token_account.clone(),
                 ctx.accounts.grand_parent_nft_usdc_token_account.clone(),
+                ctx.accounts.owner.clone(),
+            ];
+
+            invoke(
+                &transfer_tokens_instruction,
+                &required_accounts_for_transfer,
+            )?;
+        }
+
+        if *ctx.accounts.owner.key != grand_grand_parent_nft_owner {
+            let transfer_tokens_instruction = transfer(
+                &ctx.accounts.token_program.key,
+                &ctx.accounts.source_token_account.key,
+                &ctx.accounts.grand_grand_parent_nft_usdc_token_account.key,
+                &ctx.accounts.owner.key,
+                &[ctx.accounts.owner.key],
+                pool.minting_price * pool.royalty_for_minting.grand_grand_parent as u64 / 10000, 
+            )?;
+        
+            let required_accounts_for_transfer = [
+                ctx.accounts.source_token_account.clone(),
+                ctx.accounts.grand_grand_parent_nft_usdc_token_account.clone(),
+                ctx.accounts.owner.clone(),
+            ];
+
+            invoke(
+                &transfer_tokens_instruction,
+                &required_accounts_for_transfer,
+            )?;
+        }
+
+        if *ctx.accounts.owner.key != grand_grand_grand_parent_nft_owner {
+            let transfer_tokens_instruction = transfer(
+                &ctx.accounts.token_program.key,
+                &ctx.accounts.source_token_account.key,
+                &ctx.accounts.grand_grand_grand_parent_nft_usdc_token_account.key,
+                &ctx.accounts.owner.key,
+                &[ctx.accounts.owner.key],
+                pool.minting_price * pool.royalty_for_minting.grand_parent as u64 / 10000, 
+            )?;
+        
+            let required_accounts_for_transfer = [
+                ctx.accounts.source_token_account.clone(),
+                ctx.accounts.grand_grand_grand_parent_nft_usdc_token_account.clone(),
                 ctx.accounts.owner.clone(),
             ];
 
@@ -1177,14 +1221,15 @@ pub struct InitConfig<'info>{
     config : AccountInfo<'info>,
 }
 
-pub const METADATA_EXTENDED_SIZE : usize = 32 + 32 + 32 + 4 + 4 + 1;
+pub const METADATA_EXTENDED_SIZE : usize = 32 + 32 + 32 + 32 + 32 + 32 + 4 + 4 + 1;
 #[account]
 pub struct MetadataExtended{
     pub mint : Pubkey,
+    pub minter : Pubkey,
     pub parent_nfp : Pubkey,
     pub grand_parent_nfp : Pubkey,
-    // pub grand_grand_parent_nfp : Pubkey,
-    // pub grand_grand_grand_parent_nfp : Pubkey,
+    pub grand_grand_parent_nfp : Pubkey,
+    pub grand_grand_grand_parent_nfp : Pubkey,
     pub children_count : u32,
     pub number : u32,
     pub bump : u8,
@@ -1220,14 +1265,15 @@ pub struct Pool{
     pub bump : u8
 }
 
-pub const ROYALTY_SIZE : usize = 2 + 2 + 2 + 2 + 2;
+pub const ROYALTY_SIZE : usize = 2 + 2 + 2 + 2 + 2 + 2;
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Default)]
 pub struct Royalty{
     pub scoby : u16,
     pub creator : u16,
-    pub creator_scout : u16,
     pub parent : u16,
-    pub grand_parent : u16
+    pub grand_parent : u16,
+    pub grand_grand_parent : u16,
+    pub grand_grand_grand_parent : u16
 }
 
 pub const CONFIG_SIZE : usize = 32 + 4 + CONFIG_DATA_SIZE; // + 4 + CONFIG_LINE_SIZE * max_number_of_lines
