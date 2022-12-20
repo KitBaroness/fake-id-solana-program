@@ -241,6 +241,11 @@ pub mod solana_anchor {
             return Err(PoolError::InvalidMintPrerequirement.into());
         }
 
+        if pool.scoby_wallet != *ctx.accounts.scoby_wallet.key {
+            return Err(PoolError::InvalidPoolWallet.into());
+        }
+        msg!("valid scoby");
+
         // if parent_nft_account.mint != *ctx.accounts.parent_nft_mint.key 
         //     || parent_nft_account.amount != 1 {
         //     return Err(PoolError::InvalidCreatorScoutRequirement.into());
@@ -397,6 +402,7 @@ pub mod solana_anchor {
     pub fn mint(
         ctx : Context<Mint>,
         _bump : u8,
+        _data : Metadata,
         ) -> ProgramResult {
         msg!("+ mint");
         let pool = &mut ctx.accounts.pool;
@@ -762,7 +768,7 @@ pub mod solana_anchor {
                 &ctx.accounts.grand_grand_grand_parent_nft_usdc_token_account.key,
                 &ctx.accounts.owner.key,
                 &[ctx.accounts.owner.key],
-                pool.minting_price * pool.royalty_for_minting.grand_parent as u64 / 10000, 
+                pool.minting_price * pool.royalty_for_minting.grand_grand_grand_parent as u64 / 10000, 
             )?;
         
             let required_accounts_for_transfer = [
@@ -779,62 +785,62 @@ pub mod solana_anchor {
 
         msg!("usdc transfer done");
 
-        let mut royalty_scoby = pool.royalty_for_trading.scoby as u8;
-        let mut royalty_creator_scout = pool.royalty_for_trading.creator_scout as u8;
+        // let mut royalty_scoby = pool.royalty_for_trading.scoby as u8;
+        // let mut royalty_creator_scout = pool.royalty_for_trading.creator_scout as u8;
         let mut royalty_creator = pool.royalty_for_trading.creator as u8;
         let mut royalty_parent = pool.royalty_for_trading.parent as u8;
         let mut royalty_grand_parent = pool.royalty_for_trading.grand_parent as u8;
-        // let mut royalty_grand_grand_parent = pool.royalty_for_trading.grand_grand_parent as u8;
-        // let mut royalty_grand_grand_grand_parent = pool.royalty_for_trading.grand_grand_grand_parent as u8;
+        let mut royalty_grand_grand_parent = pool.royalty_for_trading.grand_grand_parent as u8;
+        let mut royalty_grand_grand_grand_parent = pool.royalty_for_trading.grand_grand_grand_parent as u8;
         
-        if scoby_wallet ==  creator_scout_wallet {
-            royalty_scoby += royalty_creator_scout;
-            royalty_creator_scout = 0;
-        }
-        
-        if scoby_wallet ==  creator_wallet {
-            royalty_scoby += royalty_creator;
-            royalty_creator = 0;
-        }
-
-        if scoby_wallet ==  grand_parent_nft_owner {
-            royalty_scoby += royalty_grand_parent;
-            royalty_grand_parent = 0;
-        }
-
-        if scoby_wallet ==  parent_nft_owner {
-            royalty_scoby += royalty_parent;
+        if creator_wallet ==  parent_nft_owner {
+            royalty_creator += royalty_parent;
             royalty_parent = 0;
         }
-
-        if creator_scout_wallet ==  creator_wallet {
-            royalty_creator_scout += royalty_creator;
-            royalty_creator = 0;
-        }
-
-        if creator_scout_wallet ==  grand_parent_nft_owner {
-            royalty_creator_scout += royalty_grand_parent;
-            royalty_grand_parent = 0;
-        }
-
-        if creator_scout_wallet ==  parent_nft_owner {
-            royalty_creator_scout += royalty_parent;
-            royalty_parent = 0;
-        }
-
+        
         if creator_wallet ==  grand_parent_nft_owner {
             royalty_creator += royalty_grand_parent;
             royalty_grand_parent = 0;
         }
 
-        if creator_wallet ==  parent_nft_owner {
-            royalty_creator += royalty_parent;
-            royalty_parent = 0;
+        if creator_wallet ==  grand_grand_parent_nft_owner {
+            royalty_creator += royalty_grand_grand_parent;
+            royalty_grand_grand_parent = 0;
+        }
+
+        if creator_wallet ==  grand_grand_grand_parent_nft_owner {
+            royalty_creator += royalty_grand_grand_grand_parent;
+            royalty_grand_grand_grand_parent = 0;
         }
 
         if parent_nft_owner ==  grand_parent_nft_owner {
             royalty_parent += royalty_grand_parent;
             royalty_grand_parent = 0;
+        }
+
+        if parent_nft_owner ==  grand_grand_parent_nft_owner {
+            royalty_parent += royalty_grand_grand_parent;
+            royalty_grand_grand_parent = 0;
+        }
+
+        if parent_nft_owner ==  grand_grand_grand_parent_nft_owner {
+            royalty_parent += royalty_grand_grand_grand_parent;
+            royalty_grand_grand_grand_parent = 0;
+        }
+
+        if grand_parent_nft_owner ==  grand_grand_parent_nft_owner {
+            royalty_grand_parent += royalty_grand_grand_parent;
+            royalty_grand_grand_parent = 0;
+        }
+
+        if grand_parent_nft_owner ==  grand_grand_grand_parent_nft_owner {
+            royalty_grand_parent += royalty_grand_grand_grand_parent;
+            royalty_grand_grand_grand_parent = 0;
+        }
+
+        if grand_grand_parent_nft_owner ==  grand_grand_grand_parent_nft_owner {
+            royalty_grand_grand_parent += royalty_grand_grand_grand_parent;
+            royalty_grand_grand_grand_parent = 0;
         }
 
         let mut creators : Vec<metaplex_token_metadata::state::Creator> = 
@@ -843,22 +849,6 @@ pub mod solana_anchor {
                 verified : true,
                 share : 0,
             }];
-
-        if royalty_scoby != 0{
-            creators.push(metaplex_token_metadata::state::Creator{
-                address : scoby_wallet,
-                verified : false,
-                share : royalty_scoby as u8,
-            });
-        }
-
-        if royalty_creator_scout != 0{
-            creators.push(metaplex_token_metadata::state::Creator{
-                address : creator_scout_wallet,
-                verified : false,
-                share : royalty_creator_scout as u8,
-            });
-        }
 
         if royalty_creator != 0{
             creators.push(metaplex_token_metadata::state::Creator{
@@ -884,34 +874,29 @@ pub mod solana_anchor {
             });
         }
 
-        // if royalty_grand_grand_parent != 0{
-        //     creators.push(metaplex_token_metadata::state::Creator{
-        //         address : *ctx.accounts.grand_grand_parent_nft_owner.key,
-        //         verified : false,
-        //         share : royalty_grand_grand_parent as u8,
-        //     });
-        // }
+        if royalty_grand_grand_parent != 0{
+            creators.push(metaplex_token_metadata::state::Creator{
+                address : grand_grand_parent_nft_owner,
+                verified : false,
+                share : royalty_grand_grand_parent as u8,
+            });
+        }
 
-        // if royalty_grand_grand_grand_parent != 0{
-        //     creators.push(metaplex_token_metadata::state::Creator{
-        //         address : *ctx.accounts.grand_grand_grand_parent_nft_owner.key,
-        //         verified : false,
-        //         share : royalty_grand_grand_grand_parent as u8,
-        //     });
-        // }
-
-        // creators.push(metaplex_token_metadata::state::Creator{
-        //     address : *ctx.accounts.scoby_wallet.key,
-        //     verified : false,
-        //     share : 100,
-        // });
+        if royalty_grand_grand_grand_parent != 0{
+            creators.push(metaplex_token_metadata::state::Creator{
+                address : grand_grand_grand_parent_nft_owner,
+                verified : false,
+                share : royalty_grand_grand_grand_parent as u8,
+            });
+        }
 
         // let sparkle_heart = vec![0u8];
-        let substring: String =config_line.name.clone().replace(std::str::from_utf8(&vec![0u8]).unwrap(), "").to_owned() + &" #".to_owned() + &pool.count_minting.to_string();
+        let substring: String =_data.name.clone().replace(std::str::from_utf8(&vec![0u8]).unwrap(), "").to_owned() + &" #".to_owned() + &pool.count_minting.to_string();
         
-        msg!(&config_line.name.clone().replace(std::str::from_utf8(&vec![0u8]).unwrap(), "").len().to_string());
-        msg!(&substring);
-        msg!(&substring.len().to_string());
+        // msg!(&config_line.name.clone().replace(std::str::from_utf8(&vec![0u8]).unwrap(), "").len().to_string());
+        // msg!(&substring);
+        // msg!(&substring.len().to_string());
+
         let pool_seeds = &[pool.rand.as_ref(),&[pool.bump]];
         invoke_signed(
             &create_metadata_accounts(
@@ -923,7 +908,7 @@ pub mod solana_anchor {
                 pool.key(),
                 substring,
                 config_data.symbol.clone(),
-                config_line.uri,
+                _data.uri,
                 Some(creators),
                 config_data.seller_fee,
                 true,
@@ -982,10 +967,11 @@ pub mod solana_anchor {
             &[pool_seeds]
         )?;
         metadata_extended.mint = nft_mint;
+        metadata_extended.minter = *ctx.accounts.owner.key;
         metadata_extended.parent_nfp = parent_nft_account.mint;
         metadata_extended.grand_parent_nfp = grand_parent_nft_account.mint;
-        // metadata_extended.grand_grand_parent_nfp = *ctx.accounts.grand_grand_parent_nft_mint.key;
-        // metadata_extended.grand_grand_grand_parent_nfp = grand_grand_grand_parent_nft_account.mint;
+        metadata_extended.grand_grand_parent_nfp = grand_grand_parent_nft_account.mint;
+        metadata_extended.grand_grand_grand_parent_nfp = grand_grand_grand_parent_nft_account.mint;
 
         metadata_extended.children_count = 0;
         metadata_extended.number = pool.count_minting;
@@ -1065,8 +1051,8 @@ pub struct Mint<'info>{
     // #[account(mut)]
     // grand_grand_parent_nft_mint : AccountInfo<'info>,
 
-    // #[account(mut)]
-    // grand_grand_parent_nft_account : AccountInfo<'info>,
+    #[account(mut)]
+    grand_grand_parent_nft_account : AccountInfo<'info>,
 
     // #[account(mut)]
     // grand_grand_parent_nft_owner : AccountInfo<'info>,
@@ -1074,8 +1060,8 @@ pub struct Mint<'info>{
     // #[account(mut)]
     // grand_grand_grand_parent_nft_mint : AccountInfo<'info>,
 
-    // #[account(mut)]
-    // grand_grand_grand_parent_nft_account : AccountInfo<'info>,
+    #[account(mut)]
+    grand_grand_grand_parent_nft_account : AccountInfo<'info>,
 
     // #[account(mut)]
     // grand_grand_grand_parent_nft_owner : AccountInfo<'info>,
@@ -1086,8 +1072,8 @@ pub struct Mint<'info>{
     // #[account(mut)]
     // creator_wallet : AccountInfo<'info>,
 
-    #[account(mut)]
-    creator_scout_nft_account : AccountInfo<'info>,
+    // #[account(mut)]
+    // creator_scout_nft_account : AccountInfo<'info>,
 
     // #[account(mut)]
     // creator_scout_wallet : AccountInfo<'info>,
@@ -1104,14 +1090,20 @@ pub struct Mint<'info>{
     #[account(mut)]
     creator_usdc_token_account : AccountInfo<'info>,
 
-    #[account(mut)]
-    creator_scout_usdc_token_account : AccountInfo<'info>,
+    // #[account(mut)]
+    // creator_scout_usdc_token_account : AccountInfo<'info>,
 
     #[account(mut)]
     parent_nft_usdc_token_account : AccountInfo<'info>,
     
     #[account(mut)]
     grand_parent_nft_usdc_token_account : AccountInfo<'info>,
+
+    #[account(mut)]
+    grand_grand_parent_nft_usdc_token_account : AccountInfo<'info>,
+
+    #[account(mut)]
+    grand_grand_grand_parent_nft_usdc_token_account : AccountInfo<'info>,
 
     #[account(address = spl_token::id())]
     token_program: AccountInfo<'info>,
@@ -1156,11 +1148,11 @@ pub struct MintRoot<'info>{
 
     // related_nfp_account : AccountInfo<'info>,
 
-    #[account(mut)]
-    creator_scout_nft_mint : AccountInfo<'info>,
+    // #[account(mut)]
+    // creator_scout_nft_mint : AccountInfo<'info>,
 
-    #[account(mut)]
-    creator_scout_nft_account : AccountInfo<'info>,
+    // #[account(mut)]
+    // creator_scout_nft_account : AccountInfo<'info>,
 
     #[account(mut)]
     source_token_account : AccountInfo<'info>,
