@@ -486,14 +486,14 @@ export default function Mint(){
 						// parentNftOwner : parentMembershipOwner,
 						parentNftMetadataExtended : parentMembership.metadataExtended,
 						// grandParentNftMint : parentMembership.extendedData.parentNfp,
-						grandParentNftAccount : grandParentMembershipAccount,
+						// grandParentNftAccount : grandParentMembershipAccount,
 						// grandParentNftOwner : grandParentMembershipOwner,
 						
 						// grandGrandParentNftMint : parentMembership.extendedData.grandParentNfp,
-						grandGrandParentNftAccount : grandGrandParentMembershipAccount,
+						// grandGrandParentNftAccount : grandGrandParentMembershipAccount,
 						// grandGrandParentNftOwner : grandGrandParentMembershipOwner,
 						// grandGrandGrandParentNftMint : parentMembership.extendedData.grandGrandParentNfp,
-						grandGrandGrandParentNftAccount : grandGrandGrandParentMembershipAccount,
+						// grandGrandGrandParentNftAccount : grandGrandGrandParentMembershipAccount,
 						// grandGrandGrandParentNftOwner : grandGrandGrandParentMembershipOwner,
 						
 						// scobyWallet : poolData.scobyWallet,
