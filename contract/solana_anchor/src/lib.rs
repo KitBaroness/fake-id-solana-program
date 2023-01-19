@@ -431,21 +431,21 @@ pub mod solana_anchor {
         // // init grand parent nft
         // let grand_parent_nft_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_parent_nft_account.data.borrow())?;
         
-        // let grand_parent_nft_usdc_token_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_parent_nft_usdc_token_account.data.borrow())?;
+        let grand_parent_nft_usdc_token_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_parent_nft_usdc_token_account.data.borrow())?;
         
         let grand_parent_nft_owner = grand_parent_nft_usdc_token_account.owner;
         
         // // init grand_grand parent nft
         // let grand_grand_parent_nft_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_grand_parent_nft_account.data.borrow())?;
         
-        // let grand_grand_parent_nft_usdc_token_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_grand_parent_nft_usdc_token_account.data.borrow())?;
+        let grand_grand_parent_nft_usdc_token_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_grand_parent_nft_usdc_token_account.data.borrow())?;
         
         let grand_grand_parent_nft_owner = grand_grand_parent_nft_usdc_token_account.owner;
 
         // // init grand_grand_grand parent nft
         // let grand_grand_grand_parent_nft_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_grand_grand_parent_nft_account.data.borrow())?;
         
-        // let grand_grand_grand_parent_nft_usdc_token_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_grand_grand_parent_nft_usdc_token_account.data.borrow())?;
+        let grand_grand_grand_parent_nft_usdc_token_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.grand_grand_grand_parent_nft_usdc_token_account.data.borrow())?;
         
         let grand_grand_grand_parent_nft_owner = grand_grand_grand_parent_nft_usdc_token_account.owner;
         
