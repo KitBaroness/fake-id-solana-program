@@ -28,7 +28,7 @@ import {createMint,createAssociatedTokenAccountInstruction,sendTransactionWithRe
 import { getOrCreateAssociatedTokenAccount } from '../helper/getOrCreateAssociatedTokenAccount'
 
 let wallet : any
-let conn = new Connection(clusterApiUrl('devnet'))
+let conn = new Connection("https://divine-muddy-field.solana-mainnet.quiknode.pro/6f9c00c41eeff23bf8dcf0dd45b6a77d1f647a1e/")
 let notify: any
 
 const { metadata: { Metadata } } = programs
@@ -41,7 +41,7 @@ const FakeIDNFTIdl = require('./usdc-fake-id.json')
 const ParentWallet = new PublicKey('4NCF6k76LThBY5Kx6jUBFeY5b7rLULoFugmGDX9Jx77B')
 
 // meta data for scoby nft
-const FakeIDNFTPOOL = new PublicKey('6TVrWdVQAegLFUewKJLeZ7qsB43qXXwWxJmAu6ztsDmV')
+const FakeIDNFTPOOL = new PublicKey('A9ofFEnwc3dnmTMRt3w2Sk9cNDAV55NaB4mF1QrxMe2Y')
 const FakeIDNFTSYMBOL = "HELLPASS"
 
 // ...  more nfts can be added here
@@ -230,10 +230,10 @@ export default function Mint(){
 			let royaltyList : String[]= []
 
 			let formData = {
-				name : 'first fake ID',
-				uri: `https://gateway.pinata.cloud/ipfs/QmYk9gvH54WW6ZTpvjVDuCkhRXiZEwxjk7YhCxq3zYFxCY/1.json`,
+				name : 'Sally the Clubhouse Wallet',
+				uri: `https://shdw-drive.genesysgo.net/7nPP797RprCMJaSXsyoTiFvMZVQ6y1dUgobvczdWGd35/clubhouse-wallet.json`,
 			}
-			var usdcToken = new PublicKey('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU');
+			var usdcToken = new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v');
 
 			var sourceTokenAccount = await getOrCreateAssociatedTokenAccount(
 				conn,

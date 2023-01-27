@@ -2,10 +2,10 @@
 	"maxNumberOfLines" : 1,
 	"symbol" : "HELLPASS",
 	"creator" : "4NCF6k76LThBY5Kx6jUBFeY5b7rLULoFugmGDX9Jx77B",
-	"sellerFee" : 1500,
+	"sellerFee" : 2000,
 	"updateAuthority" : "5naz6yeUatB3QmYApqxM1qGKDHLuxrMzVcHto1gyyxkk",
 	"scobyWallet" : "BhfqmcMMEbf5gRJ4hwXzmso7BiBYztpnuqTjzXNt9sEe",
-	"mintingPrice" : 0.1,
+	"mintingPrice" : 6.66,
 	"royaltyForMinting" : {
 		"scoby" : 0,
 		"creator" : 6000,
@@ -16,10 +16,10 @@
 	},
 	"royaltyForTrading" : {
 		"scoby" : 0,
-		"creator" : 46,
-		"parent" : 33,
-		"grandParent" : 13,
-		"grandGrandParent" : 8,
+		"creator" : 50,
+		"parent" : 25,
+		"grandParent" : 15,
+		"grandGrandParent" : 10,
 		"grandGrandGrandParent" : 0
 	}
 
