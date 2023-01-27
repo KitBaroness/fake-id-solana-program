@@ -866,9 +866,9 @@ pub mod solana_anchor {
         metadata_extended.mint = nft_mint;
         metadata_extended.minter = *ctx.accounts.owner.key;
         metadata_extended.parent_nfp = parent_nft_metadata_extended.mint;
-        metadata_extended.grand_parent_nfp = parent_nft_metadata_extended.grand_parent_nfp;
-        metadata_extended.grand_grand_parent_nfp = parent_nft_metadata_extended.grand_grand_parent_nfp;
-        metadata_extended.grand_grand_grand_parent_nfp = parent_nft_metadata_extended.grand_grand_grand_parent_nfp;
+        metadata_extended.grand_parent_nfp = parent_nft_metadata_extended.parent_nfp;
+        metadata_extended.grand_grand_parent_nfp = parent_nft_metadata_extended.grand_parent_nfp;
+        metadata_extended.grand_grand_grand_parent_nfp = parent_nft_metadata_extended.grand_grand_parent_nfp;
 
         metadata_extended.children_count = 0;
         metadata_extended.number = pool.count_minting;
