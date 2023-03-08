@@ -422,7 +422,7 @@ pub mod solana_anchor {
         // init parent nft
         let parent_nft_metadata_extended = &mut ctx.accounts.parent_nft_metadata_extended;
 
-        let parent_nft_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.parent_nft_account.data.borrow())?;
+        // let parent_nft_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.parent_nft_account.data.borrow())?;
                 
         let parent_nft_usdc_token_account : state::Account = state::Account::unpack_from_slice(&ctx.accounts.parent_nft_usdc_token_account.data.borrow())?;
 
