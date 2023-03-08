@@ -482,7 +482,7 @@ export default function Mint(){
 						masterEdition : masterEdition,
 						metadataExtended : metadataExtended,
 						// parentNftMint : parentMembership.extendedData.mint,
-						parentNftAccount : parentMembershipAccount,
+						// parentNftAccount : parentMembershipAccount,
 						// parentNftOwner : parentMembershipOwner,
 						parentNftMetadataExtended : parentMembership.metadataExtended,
 						// grandParentNftMint : parentMembership.extendedData.parentNfp,

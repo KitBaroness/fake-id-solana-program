@@ -464,9 +464,7 @@ pub mod solana_anchor {
        
         msg!("+ nft done");
 
-        if parent_nft_account.mint != parent_nft_metadata_extended.mint 
-            || parent_nft_account.owner != parent_nft_owner
-            || parent_nft_account.amount != 1 {
+        if parent_nft_usdc_token_account.owner != parent_nft_owner {
             return Err(PoolError::InvalidOldestMintRequirement.into());
         }
         msg!("+ parent done");
