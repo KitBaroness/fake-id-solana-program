@@ -924,8 +924,8 @@ pub struct Mint<'info>{
     // #[account(mut)]
     // parent_nft_mint : AccountInfo<'info>,
 
-    #[account(mut)]
-    parent_nft_account : AccountInfo<'info>,
+    // #[account(mut)]
+    // parent_nft_account : AccountInfo<'info>,
 
     // #[account(mut)]
     // parent_nft_owner : AccountInfo<'info>,
