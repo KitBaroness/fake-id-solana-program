@@ -1,76 +1,25 @@
-## FLOW
+## STRUCTURE
 
-1. Create Config account
+This repository has 3 folders:
 
-```
-	ts-node src/index.ts init_config -k ./id.json -i ./info.json
-```
+Configuration: `cli/` which contains configuration functions calls to create all the Config data and the Pool for the Fake IDs via CLI commands provided by NodeJS `commander`.
+  All of those functions are in `cli/src/index.ts`.
+Sample Website: `ui/` containing a simple Website to test the Fake ID minting
+Smart Contract: `contract/` contains the Solana Smart Contract logic, both for configuration and for Fake ID minting
 
-You can get config account address( for example, F5DPS9gkCVEus9DgZ5vJwCw6ECwEjR7WBSEJgVRgtCj2)
+## CONFIGURATION
 
-In Info.json, we need some values like : 
+Please check `Readme.md` at `cli/Readme.md` for information about how to create all the needed configuration for the Fake ID minting
 
-```
-maxNumberOfLines : in our case, there is no limit
+## SAMPLE WEBSITE
 
-symbol : collection symbol
+Check `ui/README.md` for information to run the Sample Website for minting Fake IDs
 
-creator : creator wallet
+## SMART CONTRACT
 
-sellerFee : 0 ~ 10000 (the same as metadata sellerFee)
-
-```
-
-2. Add config lines
-
-```
-	ts-node src/index.ts add_config_lines -k ./id.json -u ./assets -fn <start_number> -tn <last_number > -c <config address>
-```
-
-You can check config account with following cli
-
-```
-	ts-node src/index.ts get_config -c <config address>
-```
-
-3. Create pool
-
-```
-	ts-node src/index.ts init_pool -k ./id.json -i ./info.json -c <config address>
-```
-
-You can get new pool account
-
-```
-	ts-node src/index.ts get_pool -p <Pool address>
-```
-
-4. Set simple-ui
-
-You should update these values : programId, conn, pool address, symbol
-
-## ALGORITHM
-
-Constructing config account is similar to candy machine. We should store all metadata json url on config account.
-
-In pool account, we store some properties such as :
-
-```
-owner : pool owner
-
-config : config account address
-
-count_minting : nft number we minted. If no nft minted, this value is 0(with this value, we recognize mint_root and mint)
-
-minting_price : in our case 1 sol
-
-updateAuthority : metadata updateAuthority
-
-royalty_for_minting, royalty_for_trading
-
-pool_wallet : wallet address getting fees
-```
-
-If count_minting==0, will call mint_root, else call mint endpoint
-
-
+All of the main logic is on `contract/solana_anchor/src/lib.rs`, there you'll find both
+instructions to create the `Config` Address and the `Pool` Address as well as the 
+`mint_root` and `mint` functions
+`mint_root`: Mints the NFT 0 (It's triggered when the Pool `count_minting` is equal to 0). This should be called by the same wallet address that has been configured sa the `Creator` 
+`mint`: Mints all of the others NFTs, after the 0 has been successfully minted
+Those functions also contains the Royalty Distribution logic

@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setup Variables
+
+You should update these values: `FakeIDNFTProgramId`, `conn`, `FakeIDNFTPOOL`, `FakeIDNFTSYMBOL` variables, located in `src/pages/mint.tsx`
+
 ## Available Scripts
 
 In the project directory, you can run:
