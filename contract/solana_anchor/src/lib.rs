@@ -772,6 +772,22 @@ pub mod solana_anchor {
         pool.count_minting = pool.count_minting + 1;
         Ok(())
     }
+
+    pub fn transfer_brood(
+        ctx : Context<TransferBrood>,
+        ) -> ProgramResult {
+        msg!("+ transfer");
+
+        let metadata_extended = &mut ctx.accounts.metadata_extended;
+        let winner_metadata_extended = &mut ctx.accounts.winner_metadata_extended;
+                
+        metadata_extended.parent_nfp = winner_metadata_extended.mint;
+        metadata_extended.grand_parent_nfp = winner_metadata_extended.parent_nfp;
+        metadata_extended.grand_grand_parent_nfp = winner_metadata_extended.grand_parent_nfp;
+        metadata_extended.grand_grand_grand_parent_nfp = winner_metadata_extended.grand_grand_parent_nfp;
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
@@ -855,6 +871,16 @@ pub struct Mint<'info>{
     system_program : AccountInfo<'info>,
 
     rent: Sysvar<'info, Rent>,
+}
+
+
+#[derive(Accounts)]
+pub struct TransferBrood<'info>{
+    #[account(mut)]
+    metadata_extended : ProgramAccount<'info, MetadataExtended>,
+
+    #[account(mut)]
+    winner_metadata_extended : ProgramAccount<'info, MetadataExtended>
 }
 
 #[derive(Accounts)]
