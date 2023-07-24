@@ -16,8 +16,8 @@ use {
             system_program
         }      
     },
-    metaplex_token_metadata::{
-        instruction::{create_metadata_accounts,create_master_edition,update_metadata_accounts},
+    mpl_token_metadata::{
+        instruction::{create_master_edition_v3, create_metadata_accounts_v3},
         state::{
             MAX_NAME_LENGTH, MAX_SYMBOL_LENGTH, MAX_URI_LENGTH,
         },
@@ -28,7 +28,7 @@ use {
     },
     std::cell::Ref,
 };
-declare_id!("Ah2FHrgj7yNxvriY8CCXq7KYnKAHUHwHCzre2LzNTxzc");
+declare_id!("8S18mGzHyNGur85jAPoEjad8P8rywTpjyABbBEdmj2gb");
 
 #[program]
 pub mod solana_anchor {
@@ -270,14 +270,14 @@ pub mod solana_anchor {
             )?;
         }
 
-        let mut creators : Vec<metaplex_token_metadata::state::Creator> = 
-            vec![metaplex_token_metadata::state::Creator{
+        let mut creators : Vec<mpl_token_metadata::state::Creator> = 
+            vec![mpl_token_metadata::state::Creator{
                 address : pool.key(),
                 verified : true,
                 share : 0,
             }];
         
-        creators.push(metaplex_token_metadata::state::Creator{
+        creators.push(mpl_token_metadata::state::Creator{
             address : *ctx.accounts.scoby_wallet.key,
             verified : false,
             share : 100,
@@ -287,7 +287,7 @@ pub mod solana_anchor {
 
         let pool_seeds = &[pool.rand.as_ref(),&[pool.bump]];  
         invoke_signed(
-            &create_metadata_accounts(
+            &create_metadata_accounts_v3(
                 *ctx.accounts.token_metadata_program.key,
                 *ctx.accounts.metadata.key,
                 *ctx.accounts.nft_mint.key,
@@ -301,6 +301,9 @@ pub mod solana_anchor {
                 config_data.seller_fee,
                 true,
                 true,
+                None,
+                None,
+                None,
             ),
             &[
                 ctx.accounts.metadata.clone(),
@@ -315,7 +318,7 @@ pub mod solana_anchor {
             &[pool_seeds],
         )?;
         invoke_signed(
-            &create_master_edition(
+            &create_master_edition_v3(
                 *ctx.accounts.token_metadata_program.key,
                 *ctx.accounts.master_edition.key,
                 *ctx.accounts.nft_mint.key,
@@ -323,7 +326,7 @@ pub mod solana_anchor {
                 *ctx.accounts.owner.key,
                 *ctx.accounts.metadata.key,
                 *ctx.accounts.owner.key,
-                None
+                Some(0)
             ),
             &[
                 ctx.accounts.master_edition.clone(),
@@ -338,22 +341,22 @@ pub mod solana_anchor {
             ],
             &[pool_seeds]
         )?;
-        invoke_signed(
-            &update_metadata_accounts(
-                *ctx.accounts.token_metadata_program.key,
-                *ctx.accounts.metadata.key,
-                pool.key(),
-                Some(pool.update_authority),
-                None,
-                Some(true),
-            ),
-            &[
-                ctx.accounts.token_metadata_program.clone(),
-                ctx.accounts.metadata.clone(),
-                pool.to_account_info().clone(),
-            ],
-            &[pool_seeds]
-        )?;
+        // invoke_signed(
+        //     &update_metadata_accounts(
+        //         *ctx.accounts.token_metadata_program.key,
+        //         *ctx.accounts.metadata.key,
+        //         pool.key(),
+        //         Some(pool.update_authority),
+        //         None,
+        //         Some(true),
+        //     ),
+        //     &[
+        //         ctx.accounts.token_metadata_program.clone(),
+        //         ctx.accounts.metadata.clone(),
+        //         pool.to_account_info().clone(),
+        //     ],
+        //     &[pool_seeds]
+        // )?;
         metadata_extended.mint = *ctx.accounts.nft_mint.key;
         metadata_extended.minter = *ctx.accounts.owner.key;
         metadata_extended.parent_nfp = *ctx.accounts.nft_mint.key;
@@ -634,15 +637,15 @@ pub mod solana_anchor {
             royalty_grand_grand_grand_parent = 0;
         }
 
-        let mut creators : Vec<metaplex_token_metadata::state::Creator> = 
-            vec![metaplex_token_metadata::state::Creator{
+        let mut creators : Vec<mpl_token_metadata::state::Creator> = 
+            vec![mpl_token_metadata::state::Creator{
                 address : pool.key(),
                 verified : true,
                 share : 0,
             }];
 
         if royalty_creator != 0{
-            creators.push(metaplex_token_metadata::state::Creator{
+            creators.push(mpl_token_metadata::state::Creator{
                 address : creator_wallet,
                 verified : false,
                 share : royalty_creator as u8,
@@ -650,7 +653,7 @@ pub mod solana_anchor {
         }
 
         if royalty_parent != 0{
-            creators.push(metaplex_token_metadata::state::Creator{
+            creators.push(mpl_token_metadata::state::Creator{
                 address : parent_nft_owner,
                 verified : false,
                 share : royalty_parent as u8,
@@ -658,7 +661,7 @@ pub mod solana_anchor {
         }
 
         if royalty_grand_parent != 0{
-            creators.push(metaplex_token_metadata::state::Creator{
+            creators.push(mpl_token_metadata::state::Creator{
                 address : grand_parent_nft_owner,
                 verified : false,
                 share : royalty_grand_parent as u8,
@@ -666,7 +669,7 @@ pub mod solana_anchor {
         }
 
         if royalty_grand_grand_parent != 0{
-            creators.push(metaplex_token_metadata::state::Creator{
+            creators.push(mpl_token_metadata::state::Creator{
                 address : grand_grand_parent_nft_owner,
                 verified : false,
                 share : royalty_grand_grand_parent as u8,
@@ -674,7 +677,7 @@ pub mod solana_anchor {
         }
 
         if royalty_grand_grand_grand_parent != 0{
-            creators.push(metaplex_token_metadata::state::Creator{
+            creators.push(mpl_token_metadata::state::Creator{
                 address : grand_grand_grand_parent_nft_owner,
                 verified : false,
                 share : royalty_grand_grand_grand_parent as u8,
@@ -685,7 +688,7 @@ pub mod solana_anchor {
         
         let pool_seeds = &[pool.rand.as_ref(),&[pool.bump]];
         invoke_signed(
-            &create_metadata_accounts(
+            &create_metadata_accounts_v3(
                 *ctx.accounts.token_metadata_program.key,
                 *ctx.accounts.metadata.key,
                 *ctx.accounts.nft_mint.key,
@@ -699,6 +702,9 @@ pub mod solana_anchor {
                 config_data.seller_fee,
                 true,
                 true,
+                None,
+                None,
+                None,
             ),
             &[
                 ctx.accounts.metadata.clone(),
@@ -713,7 +719,7 @@ pub mod solana_anchor {
             &[pool_seeds],
         )?;
         invoke_signed(
-            &create_master_edition(
+            &create_master_edition_v3(
                 *ctx.accounts.token_metadata_program.key,
                 *ctx.accounts.master_edition.key,
                 *ctx.accounts.nft_mint.key,
@@ -721,7 +727,7 @@ pub mod solana_anchor {
                 *ctx.accounts.owner.key,
                 *ctx.accounts.metadata.key,
                 *ctx.accounts.owner.key,
-                None
+                Some(0)
             ),
             &[
                 ctx.accounts.master_edition.clone(),
@@ -736,22 +742,22 @@ pub mod solana_anchor {
             ],
             &[pool_seeds]
         )?;
-        invoke_signed(
-            &update_metadata_accounts(
-                *ctx.accounts.token_metadata_program.key,
-                *ctx.accounts.metadata.key,
-                pool.key(),
-                Some(pool.update_authority),
-                None,
-                Some(true),
-            ),
-            &[
-                ctx.accounts.token_metadata_program.clone(),
-                ctx.accounts.metadata.clone(),
-                pool.to_account_info().clone(),
-            ],
-            &[pool_seeds]
-        )?;
+        // invoke_signed(
+        //     &update_metadata_accounts(
+        //         *ctx.accounts.token_metadata_program.key,
+        //         *ctx.accounts.metadata.key,
+        //         pool.key(),
+        //         Some(pool.update_authority),
+        //         None,
+        //         Some(true),
+        //     ),
+        //     &[
+        //         ctx.accounts.token_metadata_program.clone(),
+        //         ctx.accounts.metadata.clone(),
+        //         pool.to_account_info().clone(),
+        //     ],
+        //     &[pool_seeds]
+        // )?;
         metadata_extended.mint = nft_mint;
         metadata_extended.minter = *ctx.accounts.owner.key;
         metadata_extended.parent_nfp = parent_nft_metadata_extended.mint;
@@ -764,6 +770,22 @@ pub mod solana_anchor {
         metadata_extended.bump = _bump;
         parent_nft_metadata_extended.children_count = parent_nft_metadata_extended.children_count + 1;
         pool.count_minting = pool.count_minting + 1;
+        Ok(())
+    }
+
+    pub fn transfer_brood(
+        ctx : Context<TransferBrood>,
+        ) -> ProgramResult {
+        msg!("+ transfer");
+
+        let metadata_extended = &mut ctx.accounts.metadata_extended;
+        let winner_metadata_extended = &mut ctx.accounts.winner_metadata_extended;
+                
+        metadata_extended.parent_nfp = winner_metadata_extended.mint;
+        metadata_extended.grand_parent_nfp = winner_metadata_extended.parent_nfp;
+        metadata_extended.grand_grand_parent_nfp = winner_metadata_extended.grand_parent_nfp;
+        metadata_extended.grand_grand_grand_parent_nfp = winner_metadata_extended.grand_grand_parent_nfp;
+
         Ok(())
     }
 }
@@ -842,13 +864,23 @@ pub struct Mint<'info>{
     #[account(address = spl_token::id())]
     token_program: AccountInfo<'info>,
 
-    #[account(address = metaplex_token_metadata::id())]
+    #[account(address = mpl_token_metadata::id())]
     token_metadata_program: AccountInfo<'info>,
 
     #[account(address = system_program::ID)]
     system_program : AccountInfo<'info>,
 
     rent: Sysvar<'info, Rent>,
+}
+
+
+#[derive(Accounts)]
+pub struct TransferBrood<'info>{
+    #[account(mut)]
+    metadata_extended : ProgramAccount<'info, MetadataExtended>,
+
+    #[account(mut)]
+    winner_metadata_extended : ProgramAccount<'info, MetadataExtended>
 }
 
 #[derive(Accounts)]
@@ -889,7 +921,7 @@ pub struct MintRoot<'info>{
     #[account(address = spl_token::id())]
     token_program: AccountInfo<'info>,
 
-    #[account(address = metaplex_token_metadata::id())]
+    #[account(address = mpl_token_metadata::id())]
     token_metadata_program: AccountInfo<'info>,
 
     // system_program : Program<'info,System>,  
